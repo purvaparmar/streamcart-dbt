@@ -1,0 +1,78 @@
+version: 2
+
+models:
+
+  - name: monthly_revenue_summary
+    description: "Monthly revenue and sales performance summary."
+
+    meta:
+      owner: "data-eng@streamcart.com"
+      contains_pii: true
+      refresh_frequency: "daily"
+
+    columns:
+      - {name: order_year, description: "Order year."}
+      - {name: order_month, description: "Order month."}
+      - {name: total_orders, description: "Total successful orders."}
+      - {name: total_gross_revenue, description: "Monthly gross revenue."}
+      - {name: total_net_revenue, description: "Monthly net revenue."}
+      - {name: total_discount_given, description: "Total discounts applied."}
+      - {name: avg_discount_pct, description: "Average discount percentage."}
+      - {name: top_category, description: "Highest revenue category."}
+      - {name: top_channel, description: "Top performing sales channel."}
+
+  - name: category_revenue_pivot
+    description: "Pivot table showing revenue by category."
+
+    meta:
+      owner: "data-eng@streamcart.com"
+      contains_pii: true
+      refresh_frequency: "daily"
+
+    columns:
+      - name: order_line_key
+        description: "Unique order line surrogate key."
+
+  - name: channel_performance_summary
+    description: "Channel level daily sales performance."
+
+    meta:
+      owner: "data-eng@streamcart.com"
+      contains_pii: true
+      refresh_frequency: "daily"
+
+    columns:
+      - {name: order_date, description: "Order date."}
+      - {name: channel, description: "Sales channel."}
+      - {name: total_orders, description: "Total orders."}
+      - {name: successfull_orders, description: "Successful orders."}
+      - {name: cancelled_orders, description: "Cancelled orders."}
+      - {name: success_rate_pct, description: "Order success rate."}
+      - {name: total_gross_revenue, description: "Gross revenue."}
+      - {name: total_net_revenue, description: "Net revenue."}
+      - {name: avg_order_value, description: "Average order value."}
+      - {name: payment_method, description: "Most common payment method."}
+
+  - name: product_performance
+    description: "Product level sales and inventory performance."
+
+    meta:
+      owner: "data-eng@streamcart.com"
+      contains_pii: true
+      refresh_frequency: "daily"
+
+    columns:
+      - {name: product_id, description: "Product identifier."}
+      - {name: product_name, description: "Product name."}
+      - {name: category, description: "Product category."}
+      - {name: sub_category, description: "Product sub category."}
+      - {name: brand, description: "Product brand."}
+      - {name: margin_pct, description: "Profit margin percentage."}
+      - {name: is_low_stock, description: "Low stock indicator."}
+      - {name: total_units_sold, description: "Total quantity sold."}
+      - {name: total_net_revenue, description: "Total net revenue."}
+      - {name: avg_discount_pct, description: "Average discount percentage."}
+      - {name: RNK, description: "Revenue rank within category."}
+      - {name: qty_on_hand, description: "Current stock quantity."}
+      - {name: reorder_level, description: "Stock reorder level."}
+      - {name: warehouse_code, description: "Warehouse location."}

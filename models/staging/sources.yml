@@ -1,0 +1,41 @@
+version: 2
+
+sources:
+  - name: raw_streamcart
+    database: DBT_ASSIGN
+    schema: RAW
+    description: "Raw StreamCart JSON data"
+
+    tables:
+      - name: RAW_ORDERS
+        description: "Raw customer order events stored as JSON"
+
+        loaded_at_field: _LOADED_AT
+
+        freshness:
+          warn_after:
+            count: 12
+            period: hour
+          error_after:
+            count: 24
+            period: hour
+
+        columns:
+          - name: DATA
+            description: "Raw JSON payload"
+
+          - name: _LOADED_AT
+            description: "Timestamp when record was loaded"
+
+          - name: _SOURCE
+            description: "Source system"
+
+      - name: RAW_PRODUCTS
+        description: "Raw product catalogue stored as JSON"
+
+        columns:
+          - name: DATA
+            description: "Raw JSON payload"
+
+          - name: _LOADED_AT
+            description: "Timestamp when record was loaded"

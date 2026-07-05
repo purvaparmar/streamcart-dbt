@@ -1,0 +1,71 @@
+version: 2
+
+models:
+
+  - name: stg_orders
+    columns:
+
+      - name: event_id
+        tests:
+          - unique
+          - not_null
+
+      - name: event_type
+        tests:
+          - accepted_values:
+                arguments:
+                    values:
+                        - order_placed
+                        - order_cancelled
+                        - add_to_cart
+                        - checkout
+                        - page_view
+
+      - name: payment_status
+        tests:
+          - accepted_values:
+                arguments:
+                    values:
+                        - success
+                        - failed
+                        - pending
+
+      - name: currency_code
+        tests:
+          - accepted_values:
+                arguments:
+                    values:
+                        - INR
+                        - USD
+                        - GBP
+                        - AED
+                        - EUR
+          - valid_currency
+
+      - name: quantity
+        tests:
+          - not_null
+
+      - name: customer_id
+        tests:
+          - not_null
+
+      - name: product_id
+        tests:
+          - relationships:
+              to: ref('stg_products')
+              field: product_id
+
+  - name: stg_products
+    columns:
+
+      - name: product_id
+        tests:
+          - unique
+          - not_null
+
+      - name: list_price
+        tests:
+          - dbt_utils.expression_is_true:
+                arguments:
+                    expression: ">= cost_price"
