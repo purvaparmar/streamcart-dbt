@@ -1,5 +1,18 @@
 SELECT
-{{ dbt_utils.generate_surrogate_key(['order_id','product_id']) }} as order_line_key,
-*
+
+category,
+
+{{ dbt_utils.pivot(
+    'channel',
+    ['mobile_app', 'web', 'partner_api'],
+    agg='sum',
+    then_value='net_amount'
+) }}
 
 FROM {{ ref('fct_orders') }}
+
+WHERE payment_status = 'success'
+
+GROUP BY category
+
+ORDER BY category

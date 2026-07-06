@@ -4,11 +4,17 @@
         unique_key = 'order_line_key',
         incremental_strategy = 'merge',
         on_schema_change = 'sync_all_columns',
-        cluster_by = ['order_date']
+        cluster_by = ['order_date'],
+
+        post_hook = [
+            "ALTER TABLE {{ this }} CLUSTER BY (order_date)",
+
+            "{% if target.name == 'prod' %}
+                GRANT SELECT ON {{ this }} TO ROLE prod_reader
+             {% endif %}"
+        ]
     )
-
 }}
-
 
 
 SELECT

@@ -30,8 +30,17 @@ models:
       refresh_frequency: "daily"
 
     columns:
-      - name: order_line_key
-        description: "Unique order line surrogate key."
+      - name: category
+        description: "Product category."
+
+      - name: mobile_app
+        description: "Revenue from the Mobile App channel."
+
+      - name: web
+        description: "Revenue from the Web channel."
+
+      - name: partner_api
+        description: "Revenue from the Partner API channel."
 
   - name: channel_performance_summary
     description: "Channel level daily sales performance."
@@ -51,7 +60,7 @@ models:
       - {name: total_gross_revenue, description: "Gross revenue."}
       - {name: total_net_revenue, description: "Net revenue."}
       - {name: avg_order_value, description: "Average order value."}
-      - {name: payment_method, description: "Most common payment method."}
+      - {name: most_used_payment_method, description: "Most common payment method."}
 
   - name: product_performance
     description: "Product level sales and inventory performance."
@@ -72,7 +81,7 @@ models:
       - {name: total_units_sold, description: "Total quantity sold."}
       - {name: total_net_revenue, description: "Total net revenue."}
       - {name: avg_discount_pct, description: "Average discount percentage."}
-      - {name: RNK, description: "Revenue rank within category."}
+      - {name: revenue_rank, description: "Revenue rank within category."}
       - {name: qty_on_hand, description: "Current stock quantity."}
       - {name: reorder_level, description: "Stock reorder level."}
       - {name: warehouse_code, description: "Warehouse location."}

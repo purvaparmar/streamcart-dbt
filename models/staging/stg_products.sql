@@ -1,7 +1,14 @@
 WITH source_data AS (
-select
-*
-from {{ source('raw_streamcart', 'RAW_PRODUCTS') }}
+
+SELECT
+{{ dbt_utils.star(
+    from=source('raw_streamcart','RAW_PRODUCTS'),
+    except=['_LOADED_AT']
+) }},
+_LOADED_AT
+
+FROM {{ source('raw_streamcart','RAW_PRODUCTS') }}
+
 ),
 product_data as (
 

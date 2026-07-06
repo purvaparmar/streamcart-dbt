@@ -13,33 +13,33 @@ models:
       - name: event_type
         tests:
           - accepted_values:
-                arguments:
-                    values:
-                        - order_placed
-                        - order_cancelled
-                        - add_to_cart
-                        - checkout
-                        - page_view
+              arguments:
+                values:
+                  - order_placed
+                  - order_cancelled
+                  - add_to_cart
+                  - checkout
+                  - page_view
 
       - name: payment_status
         tests:
           - accepted_values:
-                arguments:
-                    values:
-                        - success
-                        - failed
-                        - pending
+              arguments:
+                values:
+                  - success
+                  - failed
+                  - pending
 
       - name: currency_code
         tests:
           - accepted_values:
-                arguments:
-                    values:
-                        - INR
-                        - USD
-                        - GBP
-                        - AED
-                        - EUR
+              arguments:
+                values:
+                  - INR
+                  - USD
+                  - GBP
+                  - AED
+                  - EUR
           - valid_currency
 
       - name: quantity
@@ -50,13 +50,33 @@ models:
         tests:
           - not_null
 
+      - name: email
+        tests:
+          - dbt_expectations.expect_column_values_to_match_regex:
+              arguments:
+                regex: "^[a-z0-9._%+-]+@[a-z0-9.-]+[.][a-z]{2,}$"
+
+      - name: net_amount
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              arguments:
+                min_value: 0
+                max_value: 1000000
+
       - name: product_id
         tests:
           - relationships:
-              to: ref('stg_products')
-              field: product_id
+              arguments:
+                to: ref('stg_products')
+                field: product_id
 
   - name: stg_products
+
+    tests:
+      - dbt_utils.expression_is_true:
+          arguments:
+            expression: "list_price >= cost_price"
+
     columns:
 
       - name: product_id
@@ -65,7 +85,10 @@ models:
           - not_null
 
       - name: list_price
+
+      - name: margin_pct
         tests:
-          - dbt_utils.expression_is_true:
-                arguments:
-                    expression: ">= cost_price"
+          - dbt_expectations.expect_column_values_to_be_between:
+              arguments:
+                min_value: 0
+                max_value: 100

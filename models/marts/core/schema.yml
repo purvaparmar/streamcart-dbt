@@ -42,6 +42,11 @@ models:
 
       - name: avg_order_value
         description: "Average value of each order."
+        tests:
+          - dbt_expectations.expect_column_mean_to_be_between:
+              arguments:
+                min_value: 0
+                max_value: 100000
 
       - name: customer_segment
         description: "Customer segment based on spending."
@@ -60,6 +65,11 @@ models:
 
   - name: fct_orders
     description: "Fact table containing order level transactional data."
+
+    tests:
+      - dbt_expectations.expect_table_row_count_to_be_between:
+          arguments:
+            min_value: 1000
 
     meta:
       owner: "data-eng@streamcart.com"
