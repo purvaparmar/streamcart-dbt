@@ -3,14 +3,18 @@ version: 2
 models:
 
   - name: stg_orders
+    description: "Staging model containing cleaned and standardized order event data from the raw orders source."
+
     columns:
 
       - name: event_id
+        description: "Unique identifier for each order event."
         tests:
           - unique
           - not_null
 
       - name: event_type
+        description: "Type of customer event."
         tests:
           - accepted_values:
               arguments:
@@ -22,6 +26,7 @@ models:
                   - page_view
 
       - name: payment_status
+        description: "Payment status of the order."
         tests:
           - accepted_values:
               arguments:
@@ -31,6 +36,7 @@ models:
                   - pending
 
       - name: currency_code
+        description: "Currency code used for the transaction."
         tests:
           - accepted_values:
               arguments:
@@ -43,20 +49,24 @@ models:
           - valid_currency
 
       - name: quantity
+        description: "Quantity of the purchased product."
         tests:
           - not_null
 
       - name: customer_id
+        description: "Unique identifier for the customer."
         tests:
           - not_null
 
       - name: email
+        description: "Customer email address (hashed in the dev environment)."
         tests:
           - dbt_expectations.expect_column_values_to_match_regex:
               arguments:
                 regex: "^[a-z0-9._%+-]+@[a-z0-9.-]+[.][a-z]{2,}$"
 
       - name: net_amount
+        description: "Final order amount after applying discounts."
         tests:
           - dbt_expectations.expect_column_values_to_be_between:
               arguments:
@@ -64,6 +74,7 @@ models:
                 max_value: 1000000
 
       - name: product_id
+        description: "Unique identifier of the purchased product."
         tests:
           - relationships:
               arguments:
@@ -71,6 +82,7 @@ models:
                 field: product_id
 
   - name: stg_products
+    description: "Staging model containing cleaned and standardized product information."
 
     tests:
       - dbt_utils.expression_is_true:
@@ -80,15 +92,27 @@ models:
     columns:
 
       - name: product_id
+        description: "Unique identifier for each product."
         tests:
           - unique
           - not_null
 
       - name: list_price
+        description: "Selling price of the product."
 
       - name: margin_pct
+        description: "Calculated profit margin percentage."
         tests:
           - dbt_expectations.expect_column_values_to_be_between:
               arguments:
                 min_value: 0
                 max_value: 100
+
+      - name: cost_price
+        description: "Cost price of the product."
+
+      - name: category
+        description: "Product category."
+
+      - name: brand
+        description: "Brand name of the product."

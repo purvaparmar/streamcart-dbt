@@ -64,7 +64,7 @@ models:
         description: "Default currency for the country."
 
   - name: fct_orders
-    description: "Fact table containing order level transactional data."
+    description: "{{ doc('streamcart_pipeline') }}"
 
     tests:
       - dbt_expectations.expect_table_row_count_to_be_between:
@@ -77,30 +77,83 @@ models:
       refresh_frequency: "daily"
 
     columns:
-      - {name: order_line_key, description: "Surrogate key for each order line."}
-      - {name: event_id, description: "Unique event identifier."}
-      - {name: order_id, description: "Unique order identifier."}
-      - {name: customer_id, description: "Customer identifier."}
-      - {name: customer_name, description: "Customer name."}
-      - {name: customer_tier, description: "Customer tier."}
-      - {name: city, description: "Customer city."}
-      - {name: product_id, description: "Product identifier."}
-      - {name: product_name, description: "Product name."}
-      - {name: category, description: "Product category."}
-      - {name: sub_category, description: "Product sub category."}
-      - {name: brand, description: "Product brand."}
-      - {name: margin_pct, description: "Product profit margin percentage."}
-      - {name: is_low_stock, description: "Indicates whether stock is low."}
-      - {name: order_date, description: "Date when the order was placed."}
-      - {name: channel, description: "Sales channel."}
-      - {name: channel_label, description: "Readable channel name."}
-      - {name: channel_group, description: "Channel grouping."}
-      - {name: currency_code, description: "Transaction currency."}
-      - {name: payment_method, description: "Payment method."}
-      - {name: payment_status, description: "Payment status."}
-      - {name: quantity, description: "Quantity purchased."}
-      - {name: unit_price, description: "Price per unit."}
-      - {name: discount_pct, description: "Discount percentage."}
-      - {name: gross_amount, description: "Gross order amount."}
-      - {name: net_amount, description: "Net amount after discount."}
-      - {name: effective_margin_pct, description: "Effective margin after discount."}
+      - name: order_line_key
+        description: "Surrogate key for each order line."
+
+      - name: event_id
+        description: "Unique event identifier."
+
+      - name: order_id
+        description: "Unique order identifier."
+
+      - name: customer_id
+        description: "Customer identifier."
+
+      - name: customer_name
+        description: "Customer name."
+
+      - name: customer_tier
+        description: "Customer tier."
+
+      - name: city
+        description: "Customer city."
+
+      - name: product_id
+        description: "Product identifier."
+
+      - name: product_name
+        description: "Product name."
+
+      - name: category
+        description: "Product category."
+
+      - name: sub_category
+        description: "Product sub category."
+
+      - name: brand
+        description: "Product brand."
+
+      - name: margin_pct
+        description: "Product profit margin percentage."
+
+      - name: is_low_stock
+        description: "Indicates whether stock is low."
+
+      - name: order_date
+        description: "Date when the order was placed."
+
+      - name: channel
+        description: "Sales channel."
+
+      - name: channel_label
+        description: "Readable channel name."
+
+      - name: channel_group
+        description: "Channel grouping."
+
+      - name: currency_code
+        description: "Transaction currency."
+
+      - name: payment_method
+        description: "Payment method."
+
+      - name: payment_status
+        description: "Payment status."
+
+      - name: quantity
+        description: "Quantity purchased."
+
+      - name: unit_price
+        description: "Price per unit."
+
+      - name: discount_pct
+        description: "Discount percentage."
+
+      - name: gross_amount
+        description: "Gross order amount."
+
+      - name: net_amount
+        description: "Net amount after discount."
+
+      - name: effective_margin_pct
+        description: "Effective margin after discount."

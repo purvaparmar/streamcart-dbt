@@ -1,13 +1,10 @@
 {{
     config(
-        materialized = 'incremental',
-        unique_key = 'event_id',
-        incremental_strategy = 'merge'
+        materialized='incremental',
+        unique_key=['event_id', 'item_index'],
+        incremental_strategy='merge'
     )
-
 }}
-
-
 
 WITH raw_orders AS (
 
@@ -40,7 +37,8 @@ flattened AS (
         DATA,
         _LOADED_AT,
         _SOURCE,
-        order_items.value AS item
+        order_items.value AS item,
+        order_items.index AS item_index
 
     FROM latest_events,
     LATERAL FLATTEN(input => DATA:order.items) AS order_items
@@ -52,6 +50,8 @@ cleaned AS (
 SELECT
 
 TRIM(DATA:event_id::STRING) AS event_id,
+
+item_index,
 
 LOWER(TRIM(DATA:event_type::STRING)) AS event_type,
 
@@ -130,6 +130,7 @@ FROM flattened
 SELECT
 
 event_id,
+item_index,
 event_type,
 occurred_at,
 
